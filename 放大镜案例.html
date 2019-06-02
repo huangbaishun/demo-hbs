@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 350px;
+            height: 350px;
+            margin: 100px;
+            border: 1px solid red;
+            position: relative;
+        }
+
+        .big { 
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            top: 0;
+            left: 360px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            display: none;
+        }
+
+        .big img {
+            position: absolute;
+        }
+
+        .mask {
+            width: 175px;
+            height: 175px;
+            background: rgba(255, 255, 0, 0.4);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            cursor: move;
+            display: none;
+        }
+
+        .small {
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+	<div class="box" id="box">
+	    <div class="small">
+	        <img src="images/small.jpg" width="350" alt=""/>
+	        <div class="mask"></div>
+	    </div>
+	    <div class="big">
+	        <img src="images/big.jpg" width="800" alt=""/>
+	    </div>
+	</div>
+	<script>
+        var box = document.getElementById("box");
+        var mask = document.getElementsByClassName("mask")[0];
+        var big = document.getElementsByClassName("big")[0];
+        var img = big.children[0];
+        box.onmouseover = function(){
+            mask.style.display = 'block';
+            big.style.display = 'block';
+        };
+        box.onmouseout = function(){
+            mask.style.display = 'none';
+            big.style.display = 'none';
+        };
+        box.onmousemove = function(e){
+            //获取鼠标在盒子里的位置已经设置mask的位置在鼠标中心
+            var maskX = e.pageX - box.offsetLeft - mask.offsetWidth / 2;
+            var maskY = e.pageY - box.offsetTop - mask.offsetHeight / 2;
+            
+            //设定边界
+            maskX = maskX > 0 ? maskX : 0;
+            maskX = maskX > box.offsetWidth - mask.offsetWidth ?  box.offsetWidth - mask.offsetWidth  : maskX;
+            maskY = maskY > 0 ? maskY : 0; 
+            maskY = maskY > box.offsetHeight - mask.offsetHeight? box.offsetHeight - mask.offsetHeight : maskY;
+            
+
+            mask.style.left = maskX + "px";
+            mask.style.top = maskY + "px";
+            
+            // 大图比例配合
+            var imgX = maskX / box.offsetWidth * img.offsetWidth;
+            var imgY = maskY / box.offsetHeight * img.offsetHeight;
+
+            img.style.left = -imgX + "px";
+            img.style.top = -imgY + "px";
+        };  
+    </script>
+</body>
+</html>

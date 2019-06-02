@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				text-align: center;
+			}
+			.container{
+				display: flex;
+				justify-content: center;
+			}
+			.colorBox{
+				width: 100px;
+				height: 100px;
+				border:1px solid gray;
+				margin: 0 20px;
+			}
+			.showBox{
+				width: 100px;
+				height: 100px;
+				border:5px dashed gray;
+				margin: 0 auto;
+			}
+			.colorBox:nth-child(1){
+				background-color: orange;
+			}
+			.colorBox:nth-child(2){
+				background-color: skyblue;
+			}
+			.colorBox:nth-child(3){
+				background-color: yellowgreen;
+			}
+			img{
+				border: 1px solid gray;
+				margin:0 20px;
+			}
+		</style>
+	</head>
+
+	<body>		
+		<h1>支持拖拽的元素</h1>
+		<img src="images/lf.jpg" alt="" />
+		<img src="images/nm.jpg" alt="" />
+		<img src="images/sl.jpg" alt="" />
+		<h1>需要开启拖拽的元素</h1>
+		<div class='container'>
+			<!--添加开启拖拽属性-->
+			<div class="colorBox" draggable="true"></div>
+			<div class="colorBox" draggable="true"></div>
+			<div class="colorBox" draggable="true"></div>
+		</div>
+		<h1>展示框</h1>
+		<div class="showBox"></div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	//1. 记录被拖拽的元素
+	var moveDom = null;
+	var eles = document.querySelectorAll("img,.colorBox");
+	for(var i=0;i<eles.length;i++){
+		eles[i].ondragstart = function () {
+			moveDom = this;
+		};
+	}
+	//2. 将被拖拽的元素设置到目标元素上
+	var showBox = document.querySelector(".showBox");
+
+	showBox.ondragover = function (e) {
+		e.preventDefault();	//为了正常触发drop事件
+	};
+
+	showBox.ondrop = function (e) {
+		//辨别被拖拽的元素是图片还是普通元素
+		if(moveDom.src){//被拖拽的元素如果有src属性，就是图片
+			// console.log("图片");
+			this.style.background = "url("+ moveDom.src +")"
+		}else{//被拖拽的元素如果没有src属性，就是普通的元素
+			// getComputedStyle(moveDom).backgroundColor：获取元素的背景色
+			this.style.background = getComputedStyle(moveDom).backgroundColor;
+		}
+	};	
+</script>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body>
+<h3 class="playerTitle">视频播放器</h3>
+<div class="player">
+    <video src="mp4/chrome.mp4"></video>
+    <div class="controls">
+        <a href="javascript:;" class="switch fa fa-play"></a>
+        <a href="javascript:;" class="expand fa fa-expand"></a>
+        <div class="progress">
+            <div class="bar"></div>
+            <div class="loaded"></div>
+            <div class="elapse"></div>
+        </div>
+        <div class="time">
+            <span class="currentTime">00:00:00</span>
+            \
+            <span class="totalTime">00:00:00</span>
+        </div>
+    </div>
+</div>
+<script src="jquery.min.js"></script>
+<script>
+$(function(){
+    var video = $("video")[0];
+
+    //播放和暂停按钮
+    document.querySelector(".switch").onclick=function(){
+        if(video.paused) {
+            video.play();
+        }
+        else {
+            video.pause();
+        }
+        $(this).toggleClass("fa-play fa-pause");
+    };
+
+    //实现全屏
+    document.querySelector(".expand").onclick=function(){
+        if(video.requestFullScreen) {
+            video.requestFullScreen();
+        }
+        else if(video.webkitRequestFullScreen) {
+            video.webkitRequestFullScreen();
+        }
+        else if(video.mozRequestFullScreen) {
+            video.mozRequestFullScreen();
+        }
+        // video.style.width = "1000px";
+    };
+
+    function getTime(times) {
+        var hour = Math.floor(times/3600);
+        var minute = Math.floor(times%3600/60);
+        var second = Math.floor(times%60);
+
+        hour=hour>10?hour:"0"+hour;
+        minute = minute > 10 ? minute : "0" + minute;
+        second = second > 10 ? second : "0" + second;
+
+        return hour + ":" + minute + ":" + second;
+    } 
+    //实现播放业务逻辑，当视频可以播放的时候触发的事件 
+    video.oncanplay = function(){
+        // document.querySelector(".player").display = ""
+        video.style.display = "block";
+        //获取时长
+        var total = video.duration;
+        //细化成时间的格式
+        var time = getTime(total);
+        //这里不能写成document.querySelector(".totalTime");
+        $(".totalTime").html(time);
+    };
+
+    //实现播放过程中的业务逻辑--------------
+    video.ontimeupdate = function(){
+        //获取播放当前时长
+        var current = video.currentTime;
+        var currenttime = getTime(current);
+
+        $(".currentTime").text(currenttime);
+
+        //实现进度条的统一
+        var precent = current / video.duration * 100 + "%";
+        $(".elapse").css("width",precent);
+
+        // var width =$(".progress").width() * precent;
+        // $(".elapse").css("width", width);
+    };
+
+    //实现跳播
+    $(".bar").click(function(e){
+        //获取点击时的bar长度
+        var currents = e.offsetX;
+        var precent = currents / $(".progress").width();
+
+        //设置进度条和当前时间
+        $(".elapse").css("width",precent);
+
+        var current = video.duration * precent; 
+        video.currentTime = current;
+    });
+
+    //播放完毕触发的事件
+    video.onended=function(){
+        video.currentTime = 0;
+        $(".switch").addClass("fa-play").removeClass("fa-pause");
+    }
+});
+</script>
+</body>
+</html>

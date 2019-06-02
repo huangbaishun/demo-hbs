@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .div1{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        .div2{
+            width: 200px;
+            height: 200px;
+            border: 1px solid blue;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        .div3{
+            width: 200px;
+            height: 200px;
+            border: 1px solid green;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        p{
+            background-color: orange;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>	 
+	<div class="div1" id="div1">
+	    <!--在h5中，如果想拖拽元素，就必须为元素添加draggable="true". 图片和超链接默认就可以拖拽-->
+	    <p id="pe" class="pe" draggable="true">试着把我拖过去</p>
+	    <p id="pe1" draggable="true">试着也把我拖过去</p>
+	</div>
+	<div class="div2" id="div2"></div>
+	<div class="div3" id="div3"></div>
+    <script>
+        document.ondragstart = function(e){
+            e.dataTransfer.setData("text/html",e.target.id);
+        }
+        document.ondragover = function(e){
+            // e.preventDefault();
+            return false;
+        }
+        document.ondrop = function(e){
+            var data = e.dataTransfer.getData("text/html");
+            e.target.appendChild(document.querySelector("#"+data));
+        }
+    </script>
+<!-- 
+<script>
+   document.ondragstart = function(e){
+        e.dataTransfer.setData("text/html",e.target.id);
+   };
+   document.ondragover = function(e){
+        return false;
+   };
+   document.ondrop = function(e){
+        var id = e.dataTransfer.getData("text/html");
+        e.target.appendChild(document.getElementById(id));
+   }
+</script> -->
+</body>
+</html>
