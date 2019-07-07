@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+		*{padding: 0;margin: 0;}
+		html{
+			/*font-size: 20px;*/
+		}
+		/* .ads{
+			width: 10rem;
+			height: 10rem;
+			background: pink;
+			font-size: 5rem;
+			
+		}
+		.as{
+			font-size:20px;
+		} */
+		.ads {
+			width: 100px;
+			height: 100px;
+			background-color: red;
+		}
+		.as {
+			width: 1rem;
+			height: 1rem;
+			background-color: #006699;
+		}
+		
+		</style>
+	</head>
+	<body> 17673179792
+    	<div class="ads">
+    		1
+    	</div>
+    	<div class="as">
+    		2
+    	</div>
+	</body>
+	<script type="text/javascript">		
+        (function (doc, win) {
+          var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              console.log(clientWidth)
+              docEl.style.fontSize = 100 * (clientWidth / 640) + 'px';
+            };
+
+          if (!doc.addEventListener) return;
+          win.addEventListener(resizeEvt, recalc, false);
+          doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+	</script>
+</html>
